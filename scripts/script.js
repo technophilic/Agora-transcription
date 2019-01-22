@@ -36,6 +36,7 @@ function removeVideoStream (evt) {
 }
 
 
+
 document.getElementById("start").onclick = function () {
 
 // Client Setup
@@ -50,6 +51,18 @@ let appid = document.getElementById("app-id").value;
 let channelid="any-channel";
 let userid;
 
+function startTranscription(){
+    let xhr = new XMLHttpRequest();
+    xhr.open("https://vast-tor-40785.herokuapp.com/","POST",true);
+    xhr.send(JSON.stringify({
+        'appid':appid, 'uid':userid, 'channel_name':channelid, 'nick_name':`Vineeth${userid}`
+    }));
+    xhr.onreadystatechange = function() { // Call a function when the state changes.
+        if (this.readyState === XMLHttpRequest.DONE && this.status === 200) {
+            console.log("Request sent",xhr.responseText);
+        }
+    }
+}
 // Defines a client for Real Time Communication
     client.init(appid,() => console.log("AgoraRTC client initialized") ,handleFail);
 
@@ -87,6 +100,7 @@ let userid;
         let stream = evt.stream;
         addVideoStream(stream.getId());
         stream.play(stream.getId());
+        startTranscription();
     });
 //When a person is removed from the stream
     client.on('stream-removed',removeVideoStream);

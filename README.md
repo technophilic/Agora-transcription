@@ -1,2 +1,1 @@
-# Agora-Demo
-Demo app to be coded in web meetup
+Integration with audio transcription.
